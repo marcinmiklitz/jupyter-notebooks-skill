@@ -1,0 +1,7 @@
+interface:
+  display_name: "Jupyter Notebooks"
+  short_description: "Build and manage Jupyter notebooks from CLI"
+  default_prompt: "Use $jupyter-notebooks to create, execute, validate, convert, and diff notebook workflows from the command line."
+
+policy:
+  allow_implicit_invocation: true

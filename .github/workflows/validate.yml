@@ -1,0 +1,71 @@
+name: Validate Skill
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Validate SKILL.md frontmatter
+        run: |
+          # Check SKILL.md exists
+          test -f jupyter-notebooks/SKILL.md || { echo "FAIL: SKILL.md not found"; exit 1; }
+
+          # Check required frontmatter fields
+          head -20 jupyter-notebooks/SKILL.md | grep -q "^name:" || { echo "FAIL: missing name in frontmatter"; exit 1; }
+          head -20 jupyter-notebooks/SKILL.md | grep -q "^description:" || { echo "FAIL: missing description in frontmatter"; exit 1; }
+
+          echo "SKILL.md frontmatter OK"
+
+      - name: Verify all scripts run with --help
+        run: |
+          failed=0
+          for script in jupyter-notebooks/scripts/nb_*.py; do
+            echo "Testing: $script"
+            if uv run "$script" --help > /dev/null 2>&1; then
+              echo "  OK"
+            else
+              echo "  FAIL: $script"
+              failed=1
+            fi
+          done
+          exit $failed
+
+      - name: Validate preflight contract
+        run: |
+          uv run jupyter-notebooks/scripts/nb_preflight.py --help > /dev/null
+          uv run jupyter-notebooks/scripts/nb_preflight.py --mode uv > /tmp/nb_preflight_uv.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path("/tmp/nb_preflight_uv.json").read_text())
+          assert payload.get("mode") == "uv", "preflight mode is not uv"
+          assert payload.get("ok_uv") is True, "preflight uv readiness is false"
+          assert payload.get("ok") is True, "preflight overall readiness is false in uv mode"
+          print("Preflight contract OK")
+          PY
+
+      - name: Verify templates are valid JSON
+        run: |
+          for tmpl in jupyter-notebooks/assets/templates/*.ipynb; do
+            echo "Validating: $tmpl"
+            python -m json.tool "$tmpl" > /dev/null || { echo "FAIL: $tmpl is not valid JSON"; exit 1; }
+          done
+          echo "All templates valid"
