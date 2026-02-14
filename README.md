@@ -70,7 +70,7 @@ npx skills add marcinmiklitz/jupyter-notebooks-skill
 
 ```
 /plugin marketplace add marcinmiklitz/jupyter-notebooks-skill
-/plugin install jupyter-notebooks
+/plugin install jupyter-notebooks@marcinmiklitz-marketplace
 ```
 
 ## Requirements

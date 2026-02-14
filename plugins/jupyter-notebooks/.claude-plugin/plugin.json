@@ -1,0 +1,20 @@
+{
+  "name": "jupyter-notebooks",
+  "version": "0.1.0",
+  "description": "Programmatic Jupyter notebook operations skill plugin",
+  "author": {
+    "name": "Marcin Miklitz",
+    "email": "marcinmiklitz@users.noreply.github.com",
+    "url": "https://github.com/marcinmiklitz"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/marcinmiklitz/jupyter-notebooks-skill",
+  "homepage": "https://github.com/marcinmiklitz/jupyter-notebooks-skill",
+  "keywords": [
+    "jupyter",
+    "notebooks",
+    "skills",
+    "automation",
+    "claude-code"
+  ]
+}

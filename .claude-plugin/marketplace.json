@@ -1,0 +1,32 @@
+{
+  "name": "marcinmiklitz-marketplace",
+  "owner": {
+    "name": "Marcin Miklitz",
+    "email": "marcinmiklitz@users.noreply.github.com",
+    "url": "https://github.com/marcinmiklitz"
+  },
+  "metadata": {
+    "description": "Claude Code plugins maintained by Marcin Miklitz",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "jupyter-notebooks",
+      "source": "./plugins/jupyter-notebooks",
+      "description": "Programmatic Jupyter notebook operations skill",
+      "version": "0.1.0",
+      "repository": "https://github.com/marcinmiklitz/jupyter-notebooks-skill",
+      "license": "MIT",
+      "keywords": [
+        "jupyter",
+        "notebooks",
+        "skills",
+        "claude-code"
+      ],
+      "tags": [
+        "jupyter",
+        "automation"
+      ]
+    }
+  ]
+}
